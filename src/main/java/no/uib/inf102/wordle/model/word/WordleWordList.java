@@ -99,5 +99,6 @@ public class WordleWordList {
 	public int wordLength() {
 		return allWords.WORD_LENGTH;
 	}
+	
 
 }

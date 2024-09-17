@@ -1,6 +1,7 @@
 package no.uib.inf102.wordle.model.word;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -130,5 +131,16 @@ public class WordleWord implements Iterable<WordleCharacter> {
         WordleWord other = (WordleWord) obj;
         return Objects.equals(word, other.word);
     }
+    public boolean isDifferentChars(String word){
+        HashSet<Character> seen = new HashSet<>();
+        for (char c : word.toCharArray()) {
+            if(seen.contains(c)){
+                return false;
+            }
+            seen.add(c);
+        }
+        return true;
+    }
+    
 
 }
