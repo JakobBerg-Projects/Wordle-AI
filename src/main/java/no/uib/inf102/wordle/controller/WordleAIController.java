@@ -28,9 +28,9 @@ public class WordleAIController extends WordleController {
 
         Dictionary dictionary = model.getDictionary();
         this.timer = new Timer(model.getTimerDelay(), this::clockTick);
-        this.AI = new RandomStrategy(dictionary);
+        //this.AI = new RandomStrategy(dictionary);
         //this.AI = new EliminateStrategy(dictionary);
-        //this.AI = new FrequencyStrategy(dictionary);
+        this.AI = new FrequencyStrategy(dictionary);
         //this.AI = new MyStrategy(dictionary);
 
         view.addKeyListener(this);

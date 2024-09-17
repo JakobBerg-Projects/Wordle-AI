@@ -85,17 +85,42 @@ public class WordleAnswer {
      */
     public static WordleWord matchWord(String guess, String answer) {
         int wordLength = answer.length();
-        if (guess.length() != wordLength)
-            throw new IllegalArgumentException("Guess and answer must have same number of letters but guess = " + guess
-                    + " and answer = " + answer);
-
-        // TODO: Implement me :)
-
-        AnswerType[] feedback = new AnswerType[wordLength];
-        for (int i = 0; i < wordLength; i++) {
-            feedback[i] = AnswerType.WRONG;
-        }
-
-        return new WordleWord(guess,feedback);
+    if (guess.length() != wordLength) {
+        throw new IllegalArgumentException("Guess and answer must have the same number of letters but guess = " 
+                + guess + " and answer = " + answer);
     }
+
+    AnswerType[] feedback = new AnswerType[wordLength];
+    boolean[] isGreen = new boolean[wordLength];  // Marks whether a position is a green match (exact)
+    int[] answerCharCount = new int[26];  // Tracks occurrences of letters in the answer
+
+    // Step 1: Mark all exact (green) matches
+    for (int i = 0; i < wordLength; i++) {
+        char g = guess.charAt(i);
+        char a = answer.charAt(i);
+        
+        if (g == a) {
+            feedback[i] = AnswerType.CORRECT;  // Green
+            isGreen[i] = true;
+        } else {
+            feedback[i] = AnswerType.WRONG;    // Mark as wrong for now
+            answerCharCount[a - 'a']++;        // Count occurrence of this letter in the answer
+        }
+    }
+
+    // Step 2: Handle partial (yellow) matches
+    for (int i = 0; i < wordLength; i++) {
+        if (!isGreen[i]) {  // Only process if it's not already marked as green
+            char g = guess.charAt(i);
+            
+            if (answerCharCount[g - 'a'] > 0) {
+                feedback[i] = AnswerType.MISPLACED;  // Yellow
+                answerCharCount[g - 'a']--;        // Decrease the count since we used one occurrence
+            }
+        }
+    }
+
+    return new WordleWord(guess, feedback);
 }
+    }
+

@@ -61,7 +61,16 @@ public class WordleWordList {
 	 * @param feedback
 	 */
 	public void eliminateWords(WordleWord feedback) {
-		// TODO: Implement me :)
+		// Iterate over a copy of the list to avoid modifying while iterating
+		List<String> toRemove = new ArrayList<>();
+		
+		for (String word : possibleAnswers) {
+			if (!WordleWord.isPossibleWord(word, feedback)) {
+				toRemove.add(word);
+			}
+		}
+		
+		possibleAnswers.removeAll(toRemove);
 	}
 
 	/**
