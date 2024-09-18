@@ -1,8 +1,11 @@
 package no.uib.inf102.wordle.controller.AI;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import no.uib.inf102.wordle.model.Dictionary;
+import no.uib.inf102.wordle.model.word.WordleAnswer;
 import no.uib.inf102.wordle.model.word.WordleWord;
 import no.uib.inf102.wordle.model.word.WordleWordList;
 
@@ -20,64 +23,61 @@ public class MyStrategy implements IStrategy {
     @Override
     public String makeGuess(WordleWord feedback) {
         if (feedback != null) {
-            guesses.eliminateWords(feedback);
+            guesses.eliminateWords(feedback);  // Eliminate based on actual feedback
         }
+
+        // Step 1: Calculate letter frequencies for remaining possible answers
+        Map<Character, Integer> frequencyMap = calculateLetterFrequencies();
+
+        // Step 2: Iterate over possible guesses and find the best one based on letter frequencies
         String bestString = null;
-        int bestScore = - 1;
-        for(String s : guesses.possibleAnswers()){
-            if (guessCount<2 && !isDifferentChars(s)) {
-                continue;  // Skip this word if it doesn't have unique characters
-            }
-            int currentScore = scoreWord(s);
-            if(currentScore>bestScore){
+        int bestScore = -1;
+
+        for (String guess : guesses.possibleAnswers()) {
+            int currentScore = scoreWord(guess, frequencyMap);
+            
+            if (currentScore > bestScore) {
                 bestScore = currentScore;
-                bestString = s;
+                bestString = guess;
             }
         }
-        guesses.remove(bestString);
-        guessCount += 1;
-        return bestString;
+
+        return bestString;  // Return the word with the best score based on frequencies
     }
 
+    // Calculate the frequency of each character in the remaining possible answers
+    private Map<Character, Integer> calculateLetterFrequencies() {
+        Map<Character, Integer> frequencyMap = new HashMap<>();
+        
+        for (String word : guesses.possibleAnswers()) {
+            for (char c : word.toCharArray()) {
+                frequencyMap.put(c, frequencyMap.getOrDefault(c, 0) + 1);
+            }
+        }
 
-    private int scoreWord(String s){
+        return frequencyMap;
+    }
+
+    // Score a word based on how common its characters are in the remaining answers
+    private int scoreWord(String word, Map<Character, Integer> frequencyMap) {
         int score = 0;
-        for (char c : s.toCharArray()) {
-            score+= scoreChar(c);
-    }
-    return score;
-    }
-
-
-    // Method to score an individual character based on frequency in the remaining possible answers
-    private int scoreChar(char ch) {
-    int charFrequency = 0;
-
-    // Calculate the frequency of the character 'ch' in all possible answers
-    for (String word : guesses.possibleAnswers()) {
+        
+        // Only count the first occurrence of each letter in the word
+        HashSet<Character> seen = new HashSet<>();
         for (char c : word.toCharArray()) {
-            if (c == ch) {
-                charFrequency++;  // Increment the frequency count if the character matches
+            if (!seen.contains(c)) {
+                score += frequencyMap.getOrDefault(c, 0);
+                seen.add(c);
             }
         }
+
+        return score;
     }
 
-    return charFrequency;  // Return the frequency as the score for the character
-}
     @Override
     public void reset() {
         guesses = new WordleWordList(dictionary);
+        guessCount = 0;
     }
-    
-    public boolean isDifferentChars(String word){
-        HashSet<Character> seen = new HashSet<>();
-        for (char c : word.toCharArray()) {
-            if(seen.contains(c)){
-                return false;
-            }
-            seen.add(c);
-        }
-        return true;
-    }
-    
 }
+

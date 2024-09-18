@@ -30,6 +30,7 @@ public class FrequencyStrategy implements IStrategy {
         String bestString = null;
         int bestScore = - 1;
         for(String s : guesses.possibleAnswers()){
+            
             int currentScore = scoreWord(s);
             if(currentScore>bestScore){
                 bestScore = currentScore;
