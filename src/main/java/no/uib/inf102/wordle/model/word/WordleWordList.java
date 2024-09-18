@@ -99,6 +99,16 @@ public class WordleWordList {
 	public int wordLength() {
 		return allWords.WORD_LENGTH;
 	}
+	public static int countGreenMatches(String guess, List<String> possibleAnswers) {
+		int count=0;
+		for(String word : possibleAnswers) {
+			for(int i=0; i<guess.length(); i++) {
+				if(word.charAt(i)==guess.charAt(i))
+					count++;
+			}
+		}
+		return count;
+	}
 	
 
 }
