@@ -99,14 +99,32 @@ public class WordleWordList {
 	public int wordLength() {
 		return allWords.WORD_LENGTH;
 	}
+
 	public static int countGreenMatches(String guess, List<String> possibleAnswers) {
-		int count=0;
-		for(String word : possibleAnswers) {
-			for(int i=0; i<guess.length(); i++) {
-				if(word.charAt(i)==guess.charAt(i))
-					count++;
+		int count = 0;
+		int len = guess.length();
+		List<Map<Character, Integer>> positionCharCounts = new ArrayList<>(len);
+	
+		// Initialize the list of HashMaps for each position
+		for (int i = 0; i < len; i++) {
+			positionCharCounts.add(new HashMap<>());
+		}
+	
+		// Count character frequencies at each position
+		for (String word : possibleAnswers) {
+			for (int i = 0; i < len; i++) {
+				Map<Character, Integer> charCountMap = positionCharCounts.get(i);
+				char c = word.charAt(i);
+				charCountMap.put(c, charCountMap.getOrDefault(c, 0) + 1);
 			}
 		}
+	
+		// Sum the counts where characters match the guess at each position
+		for (int i = 0; i < len; i++) {
+			Map<Character, Integer> charCountMap = positionCharCounts.get(i);
+			count += charCountMap.getOrDefault(guess.charAt(i), 0);
+		}
+	
 		return count;
 	}
 	
