@@ -133,7 +133,7 @@ public class WordleWord implements Iterable<WordleCharacter> {
         WordleWord other = (WordleWord) obj;
         return Objects.equals(word, other.word);
     }
-    public boolean isDifferentChars(String word){
+    public static boolean isDifferentChars(String word){
         HashSet<Character> seen = new HashSet<>();
         for (char c : word.toCharArray()) {
             if(seen.contains(c)){

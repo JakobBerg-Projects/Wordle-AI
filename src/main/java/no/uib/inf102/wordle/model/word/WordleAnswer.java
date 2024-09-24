@@ -1,6 +1,8 @@
 package no.uib.inf102.wordle.model.word;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import no.uib.inf102.wordle.model.Dictionary;
@@ -84,43 +86,45 @@ public class WordleAnswer {
      * @return
      */
     public static WordleWord matchWord(String guess, String answer) {
-        int wordLength = answer.length();
-    if (guess.length() != wordLength) {
+        int wordLength = answer.length(); // O(1)
+        if (guess.length() != wordLength) { // O(1)
         throw new IllegalArgumentException("Guess and answer must have the same number of letters but guess = " 
                 + guess + " and answer = " + answer);
     }
 
-    AnswerType[] feedback = new AnswerType[wordLength];
-    boolean[] isGreen = new boolean[wordLength];  // Marks whether a position is a green match (exact)
-    int[] answerCharCount = new int[26];  // Tracks occurrences of letters in the answer
+    AnswerType[] feedback = new AnswerType[wordLength]; // O(k)
+    boolean[] isGreen = new boolean[wordLength]; // O(k)
+    Map<Character, Integer> answerCharCount = new HashMap<>(); // O(1)
 
     // Step 1: Mark all exact (green) matches
+    // Iterates over the word, therefor runtime is O(k)
     for (int i = 0; i < wordLength; i++) {
-        char g = guess.charAt(i);
-        char a = answer.charAt(i);
+        char g = guess.charAt(i); // O(1)
+        char a = answer.charAt(i); // O(1)
         
-        if (g == a) {
-            feedback[i] = AnswerType.CORRECT;  // Green
-            isGreen[i] = true;
+        if (g == a) { // O(1)
+            feedback[i] = AnswerType.CORRECT; // O(1)
+            isGreen[i] = true; // O(1)
         } else {
-            feedback[i] = AnswerType.WRONG;    // Mark as wrong for now
-            answerCharCount[a - 'a']++;        // Count occurrence of this letter in the answer
+            feedback[i] = AnswerType.WRONG; // O(1)
+            answerCharCount.put(a, answerCharCount.getOrDefault(a, 0) + 1); // O(1)
         }
     }
 
-    // Step 2: Handle partial (yellow) matches
-    for (int i = 0; i < wordLength; i++) {
-        if (!isGreen[i]) {  // Only process if it's not already marked as green
-            char g = guess.charAt(i);
+    // Step 2: Handle partial (yellow) matches O(k) runtime
+    // Iterates over the word, therefor runtime is O(k) worst case, however it skips the characters marked as correct
+    for (int i = 0; i < wordLength; i++) { 
+        if (!isGreen[i]) {  // O(1)
+            char g = guess.charAt(i); // O(1)
             
-            if (answerCharCount[g - 'a'] > 0) {
-                feedback[i] = AnswerType.MISPLACED;  // Yellow
-                answerCharCount[g - 'a']--;        // Decrease the count since we used one occurrence
+            if (answerCharCount.getOrDefault(g, 0) > 0) { // O(1)
+                feedback[i] = AnswerType.MISPLACED;  // O(1)
+                answerCharCount.put(g, answerCharCount.get(g) - 1); // O(1)     
             }
         }
     }
 
-    return new WordleWord(guess, feedback);
+    return new WordleWord(guess, feedback); // O(k)
 }
     }
 

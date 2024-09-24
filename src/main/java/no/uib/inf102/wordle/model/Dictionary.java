@@ -74,5 +74,8 @@ public class Dictionary {
     public boolean isLegalAnswer(String wordGuess) {
         return answerWordsSet.contains(wordGuess.toLowerCase());
     }
+    public int answerWordsSize() {
+        return answerWordsList.size();
+    }
 
 }

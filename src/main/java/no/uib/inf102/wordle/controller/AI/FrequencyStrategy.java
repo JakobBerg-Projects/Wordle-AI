@@ -25,26 +25,27 @@ public class FrequencyStrategy implements IStrategy {
     @Override
     public String makeGuess(WordleWord feedback) {
         if (feedback != null) {
-            guesses.eliminateWords(feedback);
+            guesses.eliminateWords(feedback); // O(m*k)
         }
-        String bestString = null;
-        int mostGreenMatches = - 1;
+        String bestString = null; // O(1)
+        int mostGreenMatches = - 1; // O(1)
 
+        // Iterates over all possible word O(m)
         for (String possibleWord : guesses.possibleAnswers()) {
-            int currentGreenMatches;
+            int currentGreenMatches; // O(1)
 
-            currentGreenMatches = WordleWordList.countGreenMatches(possibleWord, guesses.possibleAnswers());
+            currentGreenMatches = WordleWordList.countGreenMatches(possibleWord, guesses.possibleAnswers()); // O(m*k)
             
 
         // If the current word has more green matches than the best word so far, choose it
-        if (currentGreenMatches > mostGreenMatches) {
-            mostGreenMatches = currentGreenMatches;
-            bestString = possibleWord;
+        if (currentGreenMatches > mostGreenMatches) { // O(1)
+            mostGreenMatches = currentGreenMatches; // O(1)
+            bestString = possibleWord; // O(1)
         }
     }
 
 
-    return bestString;
+    return bestString; // O(1)
 }
 
 

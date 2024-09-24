@@ -18,9 +18,10 @@ public class AIPerformance {
 
     public static Dictionary dictionary = new Dictionary();
 
-    public static final int N_GAMES = 200;
+    public static final int N_GAMES = 1000;
     public static final int MAX_N_GUESSES = 20;
     static long seed = 14212l;
+    
 
     public static void main(String[] args) {
         // Strategies
@@ -28,7 +29,7 @@ public class AIPerformance {
         //strategies.add(new RandomStrategy(dictionary));
         //strategies.add(new EliminateStrategy(dictionary));
         strategies.add(new FrequencyStrategy(dictionary));
-        //strategies.add(new MyStrategy(dictionary));
+        strategies.add(new MyStrategy(dictionary));
 
         Map<IStrategy, AIStatistics> stats = new HashMap<>();
         System.out.println("\nStrategies running...");

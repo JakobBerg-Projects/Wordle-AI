@@ -61,16 +61,20 @@ public class WordleWordList {
 	 * @param feedback
 	 */
 	public void eliminateWords(WordleWord feedback) {
-		// Iterate over a copy of the list to avoid modifying while iterating
-		List<String> toRemove = new ArrayList<>();
+
+		List<String> newPossibleAnswers = new ArrayList<>(); // O(1)
 		
+		// Iterate over all the words in possible answers O(m)
 		for (String word : possibleAnswers) {
-			if (!WordleWord.isPossibleWord(word, feedback)) {
-				toRemove.add(word);
+
+			// Check if the word is possible given the feedback
+        	// WordleWord.isPossibleWord(word, feedback) is O(k)
+			if (WordleWord.isPossibleWord(word, feedback)) {
+				newPossibleAnswers.add(word); // O(1) Average time complexity of add for arraylist. worst-case scenario, when a new array has to be created and all the elements copied to it, it’s O(n)
 			}
 		}
 		
-		possibleAnswers.removeAll(toRemove);
+		possibleAnswers = newPossibleAnswers; // O(1)
 	}
 
 	/**
@@ -100,33 +104,22 @@ public class WordleWordList {
 		return allWords.WORD_LENGTH;
 	}
 
+	
 	public static int countGreenMatches(String guess, List<String> possibleAnswers) {
-		int count = 0;
-		int len = guess.length();
-		List<Map<Character, Integer>> positionCharCounts = new ArrayList<>(len);
+		int count = 0; // O(1)
+		int len = guess.length(); // O(1)
 	
-		// Initialize the list of HashMaps for each position
-		for (int i = 0; i < len; i++) {
-			positionCharCounts.add(new HashMap<>());
-		}
-	
-		// Count character frequencies at each position
-		for (String word : possibleAnswers) {
+		// Iterate through each possible answer O(m)
+		for (String word : possibleAnswers) { 
+			// Check if each character in the guess matches the corresponding character in the word
+			// Iterate through characters in word O(k)
 			for (int i = 0; i < len; i++) {
-				Map<Character, Integer> charCountMap = positionCharCounts.get(i);
-				char c = word.charAt(i);
-				charCountMap.put(c, charCountMap.getOrDefault(c, 0) + 1);
+				if (guess.charAt(i) == word.charAt(i)) { // O(1)
+					count++; // O(1)
+				}
 			}
 		}
 	
-		// Sum the counts where characters match the guess at each position
-		for (int i = 0; i < len; i++) {
-			Map<Character, Integer> charCountMap = positionCharCounts.get(i);
-			count += charCountMap.getOrDefault(guess.charAt(i), 0);
-		}
-	
-		return count;
+		return count; // O(1)
 	}
-	
-
 }
