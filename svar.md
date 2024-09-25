@@ -30,6 +30,8 @@ The runtime should be expressed using these three parameters:
     Hvis karakteren er til stede, oppdateres feedback og teller redusert.
     Disse operasjonene gjøres i konstant tid O(1)
 
+    Til slutt oppretter og returnerer metoden et nytt WordleWord objekt, som har tidskompleksitet O(k).
+
     Siden algoritmen utfører flere separate O(k)-operasjoner, forblir den totale tidskompleksiteten O(k). Hver operasjon er uavhengig av hverandre og kjøres sekvensielt.
 
 ## Task 2 - EliminateStrategy
@@ -83,5 +85,5 @@ The runtime should be expressed using these three parameters:
 For this task you do not need to give a runtime analysis. 
 Instead, you must explain your code. What was your idea for getting a better result? What is your strategy?
 
-Min ide var å få mest mulig informasjon ut av de første gjettene. Jeg har tatt utgangspunkt i Frequency Strategien, men med visse endringer.
-Blant annet har jeg satt et "treshold" for å få mest mulig informasjon ut av de første gjettene. Dersom størrelsen på possibleAnswers ikke har blitt minst halvert sin opprinnelige størrrelse utifra feedbacken, vil jeg at den skal velge et ord med forskjellige bokstaver, og at bokstaven ikke skal ha blitt brukt i et tidligere gjett. Dersom denne tresholden ikke er nådd, og ordet har like bokstaver i seg, eller at ordet er brukt før. Vil metoden hoppe over til neste ord i listen. Dette ser ut til å fungere godt, og har i følge AIPerformance redusert gjennomsnittlig gjett i forhold til frequency fra 3,93 til 3,63 i tillegg til at den gjetter 199/200 ord i forhold til 197/200.
+Min ide var å få mest mulig informasjon ut av de første gjettene. Jeg har tatt utgangspunkt i Frequency Strategien, men med visse endringer. 
+Blant annet har jeg satt et "treshold" for å få mest mulig informasjon ut av de første gjettene. Dersom størrelsen på possibleAnswers ikke har blitt minst halvert sin opprinnelige dictionairy størrrelse utifra feedbacken, vil jeg at den skal velge et ord med forskjellige bokstaver, og at bokstaven ikke skal ha blitt brukt i et tidligere gjett. Dersom denne tresholden ikke er nådd, og ordet har like bokstaver i seg, eller at ordet er brukt før. Vil metoden hoppe over til neste ord i listen. Dette ser ut til å fungere godt, og har i følge AIPerformance redusert gjennomsnittlig gjett i forhold til frequency fra 3,93 til 3,63 i tillegg til at den gjetter 199/200 ord i forhold til 197/200.
