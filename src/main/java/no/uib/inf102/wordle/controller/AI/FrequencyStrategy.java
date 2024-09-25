@@ -1,7 +1,5 @@
 package no.uib.inf102.wordle.controller.AI;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import no.uib.inf102.wordle.model.Dictionary;
 import no.uib.inf102.wordle.model.word.WordleWord;

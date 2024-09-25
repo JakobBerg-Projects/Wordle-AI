@@ -1,14 +1,10 @@
 package no.uib.inf102.wordle.controller.AI;
 
-import java.util.HashMap;
+
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+
 
 import no.uib.inf102.wordle.model.Dictionary;
-import no.uib.inf102.wordle.model.word.AnswerType;
-import no.uib.inf102.wordle.model.word.WordleAnswer;
-import no.uib.inf102.wordle.model.word.WordleCharacter;
 import no.uib.inf102.wordle.model.word.WordleWord;
 import no.uib.inf102.wordle.model.word.WordleWordList;
 
