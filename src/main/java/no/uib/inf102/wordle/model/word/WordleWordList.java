@@ -27,6 +27,8 @@ public class WordleWordList {
 	 */
 	private List<String> possibleAnswers;
 
+	public List<Map<Character, Integer>> positionFrequencies;
+
 	/**
 	 * Create a WordleWordList that uses the full words and limited answers of the
 	 * GetWords class.
@@ -105,21 +107,46 @@ public class WordleWordList {
 	}
 
 	
-	public static int countGreenMatches(String guess, List<String> possibleAnswers) {
+	/**
+	 * Method used for finding the word with the most frequencies of possible green matches
+	 * O(k)
+	 * 
+	 * @param guess
+	 * @param positionFrequencies
+	 * @return int that is count of green mathces in that word
+	 */
+	public static int countGreenMatches(String guess, List<Map<Character, Integer>> positionFrequencies) {
 		int count = 0; // O(1)
 		int len = guess.length(); // O(1)
 	
-		// Iterate through each possible answer O(m)
-		for (String word : possibleAnswers) { 
-			// Check if each character in the guess matches the corresponding character in the word
-			// Iterate through characters in word O(k)
-			for (int i = 0; i < len; i++) {
-				if (guess.charAt(i) == word.charAt(i)) { // O(1)
-					count++; // O(1)
-				}
-			}
+		// Iterate through each character in the guess O(k)
+		for (int i = 0; i < len; i++) { 
+			char c = guess.charAt(i); // O(1)
+			Map<Character, Integer> freqMap = positionFrequencies.get(i); // O(1)
+			count += freqMap.getOrDefault(c, 0); // O(1)
 		}
 	
 		return count; // O(1)
 	}
+
+
+	/**
+	 * Method used for precomputing letter-frequencies for all positions for the words in possibleAnswers
+	 * O(m*k)
+	 */
+	public void computePositionFrequencies() { 
+        int k = possibleAnswers.get(0).length(); // O(1)
+        positionFrequencies = new ArrayList<>(k); // O(k)
+        for (int i = 0; i < k; i++) { // O(k)
+            positionFrequencies.add(new HashMap<>()); // O(1)
+        }
+
+        for (String word : possibleAnswers) { // O(m)
+            for (int i = 0; i < k; i++) { // O(k)
+                char c = word.charAt(i); // O(1)
+                Map<Character, Integer> freqMap = positionFrequencies.get(i); // O(1)
+                freqMap.put(c, freqMap.getOrDefault(c, 0) + 1); // O(1)
+            }
+        }
+    }
 }

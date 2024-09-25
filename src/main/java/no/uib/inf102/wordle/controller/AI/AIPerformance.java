@@ -18,16 +18,17 @@ public class AIPerformance {
 
     public static Dictionary dictionary = new Dictionary();
 
-    public static final int N_GAMES = 1000;
+    public static final int N_GAMES = 2000;
     public static final int MAX_N_GUESSES = 20;
     static long seed = 14212l;
+    
     
 
     public static void main(String[] args) {
         // Strategies
         List<IStrategy> strategies = new ArrayList<>();
         //strategies.add(new RandomStrategy(dictionary));
-        //strategies.add(new EliminateStrategy(dictionary));
+        strategies.add(new EliminateStrategy(dictionary));
         strategies.add(new FrequencyStrategy(dictionary));
         strategies.add(new MyStrategy(dictionary));
 

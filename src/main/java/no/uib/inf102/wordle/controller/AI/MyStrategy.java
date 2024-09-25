@@ -28,37 +28,38 @@ public class MyStrategy implements IStrategy {
     public String makeGuess(WordleWord feedback) {
         if (feedback != null) {
             //System.out.println(guesses.possibleAnswers().size());
-            guesses.eliminateWords(feedback);
+            guesses.eliminateWords(feedback); // O(m*k)
         }
 
+        String bestString = null; // O(1)
+        int highestScore = - 1; // O(1)
+        int possibleAnswersSize = guesses.possibleAnswers().size(); // O(1)
+        boolean enforceDistinctAndUnseen = possibleAnswersSize >= dictionary.answerWordsSize()* 0.5; // O(1)
+        guesses.computePositionFrequencies(); // O(m * k)
 
-        String bestString = null;
-        int mostGreenMatches = - 1;
-        int possibleAnswersSize = guesses.possibleAnswers().size();
-        boolean enforceDistinctAndUnseen = possibleAnswersSize >= dictionary.answerWordsSize()* 0.5;
-
-        for (String possibleWord : guesses.possibleAnswers()) {
+        for (String possibleWord : guesses.possibleAnswers()) { // O(m)
+            
 
             // Enforcing different unseen characters if the possible answers hasnt been halfed from the dictionairy
-            if (enforceDistinctAndUnseen) {
-                if (!hasUniqueCharacters(possibleWord) || charIsSeen(possibleWord)) {
+            if (enforceDistinctAndUnseen) { // O(1)
+                if (!hasUniqueCharacters(possibleWord) || charIsSeen(possibleWord)) { 
                     continue;
                 }
             }
             
-
-            int currentGreenMatches;
-            currentGreenMatches = WordleWordList.countGreenMatches(possibleWord, guesses.possibleAnswers());
+            int currentScore = WordleWordList.countGreenMatches(possibleWord, guesses.positionFrequencies); // O(k){
+            
+            
             
 
-        if (currentGreenMatches > mostGreenMatches) {
-            mostGreenMatches = currentGreenMatches;
-            bestString = possibleWord;
+        if (currentScore > highestScore) { // O(1)
+            highestScore = currentScore; // O(1)
+            bestString = possibleWord; // O(1)
         }
     }
-    addCharsToSeen(bestString);
+    addCharsToSeen(bestString); //
 
-    return bestString;
+    return bestString; // O(1)
     }
 
 
