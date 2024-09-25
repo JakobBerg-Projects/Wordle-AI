@@ -57,27 +57,30 @@ The runtime should be expressed using these three parameters:
     Den totale kjøretiden for eliminateWords er derfor O(m * k), fordi du gjør m sjekker, hver med en kostnad på O(k).
 
 ## Task 3 - FrequencyStrategy
-* `FrequencyStrategy::makeGuess`: O(m^2*k)
-    Algoritmen i FrequencyStrategy har en tidskompleksitet på O(m^2 * k), der m er antall mulige svar i guesses.possibleAnswers() og 
+* `FrequencyStrategy::makeGuess`: O(m*k)
+    Algoritmen i FrequencyStrategy har en tidskompleksitet på O(m * k), der m er antall mulige svar i guesses.possibleAnswers() og 
     k er lengden på hvert ord (typisk 5 bokstaver i Wordle). 
 
     Eliminering av umulige ord:
-    Dersom funksjonen mottar feedback vil det gjøres et kall til eliminateWords, som vi nettopp har vist har en tidskompleksitet på O(m*k)
+    Dersom metoden mottar feedback vil det gjøres et kall til eliminateWords, som vi nettopp har vist har en tidskompleksitet på O(m*k)
+
+    Kalkulerer frekvens:
+    Metoden gjør et kall til computePositionFrequencies som regner ut frekvensen av bokstaver på ulik posisjon. Dette har en kompleksitet på O(m*k)
 
     Iterasjon over Mulige Ord:
     Algoritmen itererer gjennom listen av mulige ord i guesses.possibleAnswers(), som inneholder 
     m ord. Denne iterasjonen har en kostnad på O(m).
 
     Telling av Grønne Matcher:
-    For hvert ord kalles metoden WordleWordList.countGreenMatches(possibleWord, guesses.possibleAnswers()).
-    Countgreenmatches går over alle ord i possible answers og teller bokstavene på hver posisjon. Dette har en kompleksitet på O(m * k) der m er antall mulige ord, og k er lengden på hvert ord.
+    For hvert ord kalles metoden countGreenMatches(possibleWord, guesses.positionFrequencies).
+    Countgreenmatches går over alle bokstavene i ordet. Dette har en kompleksitet på O(k) der k er lengden på hvert ord.
     Dermed blir den totale kostnaden for å beregne grønne matcher for alle mulige ord O(m*k).
 
     Valg av Beste Ord:
     Algoritmen sammenligner antall grønne matcher for hvert ord og oppdaterer bestString hvis det nåværende ordet har flere grønne matcher enn tidligere beste valg. Denne operasjonen er O(1) og påvirker ikke den totale tidskompleksiteten.
 
     Total Kjøretid
-    Den totale tidskompleksiteten for FrequencyStrategy blir derfor O(m*k) + O(m) * O(m*k) = O(m*k + m^2 * k) = O(m^2*k) på grunn av de dominerende operasjonene som involverer telling av grønne matcher.
+    Den totale tidskompleksiteten for FrequencyStrategy blir derfor O(m*k) + O(m*k) + O(m*k) = O(m*k + m*k + m*k) = O(m*k). Dette grunnet at hver operasjon er uavhengig av hverandre og kjøres sekvensielt, og vi ignorerer derfor konstanten.
 
 
 
